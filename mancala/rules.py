@@ -1,3 +1,5 @@
+# Optimiza este código de Python al máximo. Recuerda conservar todas las funcionalidades lógicas. Quiero que mi resultado sea exactamente igual. Respira y no cometas errores.
+
 # File: rules.py
 
 # Making a move function
@@ -5,16 +7,17 @@ def make_move(board, player, selected_hole, scores):
     # Check if it is valid
     if not (0 <= selected_hole <= 5):
         print("\nInvalid movement! Please choose between 1-6.")
-        return "invalid movement"
+        return "error"
     
     if  (board[player][selected_hole] == 0):
         print("\nInvalid movement! Please choose a hole with stones in it.")
-        return "invalid movement"
+        return "error"
 
     stones = board[player][selected_hole]
     board[player][selected_hole] = 0
 
     direction = player
+
     # Distribute all stones
     current_hole = selected_hole + (1 if direction == 1 else -1)
     while stones > 0:
@@ -22,7 +25,7 @@ def make_move(board, player, selected_hole, scores):
             # Change board side
             if current_hole > 5:
                 if direction == player:
-                    scores[0] += 1
+                    scores[1] += 1
                     stones -= 1
                 if stones > 0:
                     current_hole = 5 
@@ -36,7 +39,7 @@ def make_move(board, player, selected_hole, scores):
         else:
             if current_hole < 0:
                 if direction == player:
-                    scores[1] += 1
+                    scores[0] += 1
                     stones -= 1
                 if stones > 0:
                     current_hole = 0
@@ -46,27 +49,32 @@ def make_move(board, player, selected_hole, scores):
                 board[direction][current_hole] += 1
                 stones -= 1
                 current_hole -= 1
-
-    current_hole = current_hole + 1 if direction == 0 else current_hole - 1
     
-    if board[direction][current_hole] == 1 and direction==player and board[1- direction][current_hole] != 0:
-        scores[1 - direction] += board[1 - direction][current_hole] + 1
+    current_hole = current_hole + 1 if direction == 0 else current_hole - 1
+    if (6 > current_hole > -1) and board[direction][current_hole] == 1 and direction==player and board[1- direction][current_hole] != 0:
+        scores[direction] += board[direction][current_hole] + 1
         board[direction][current_hole] = 0
-        board[1 - direction][current_hole] = 0
+        board[1 - direction][current_hole] = 0 
 
-# Función para verificar el estado del juego
-def verificar_estado_juego(board):
-    # Si alguno de los lados está vacío, el juego ha terminado
+    return player if (current_hole == 7 or current_hole == -2) else 1 - player
+
+# Checking game state
+def game_status(board, scores, players):
+
     if sum(board[0]) == 0 or sum(board[1]) == 0:
-        # Capturar las semillas restantes y agregarlas a los mancalas
-        board[0][6] += sum(board[0])
-        board[1][6] += sum(board[1])
-        # Determinar al ganador
-        if board[0][6] > board[1][6]:
-            return "¡Jugador 1 gana!"
-        elif board[0][6] < board[1][6]:
-            return "¡Jugador 2 gana!"
+
+        scores[0] += sum(board[0])
+        scores[1] += sum(board[1])
+
+        for row in range(len(board)):
+            for col in range(len(board[row])):
+                board[row][col] = 0
+
+        if scores[1] > scores[0]:
+            return f"{players[1]} wins!"
+        elif scores[0] > scores[1]:
+            return f"{players[0]} wins!"
         else:
-            return "¡Es un empate!"
+            return f"It's a tie between {players[1]} and {players[0]}!"
     else:
-        return "El juego aún no ha terminado."
+        return "Game still in progress."
