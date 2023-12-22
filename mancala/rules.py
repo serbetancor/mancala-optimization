@@ -66,15 +66,13 @@ def game_status(board, scores, players):
         scores[0] += sum(board[0])
         scores[1] += sum(board[1])
 
-        for row in range(len(board)):
-            for col in range(len(board[row])):
-                board[row][col] = 0
+        board[0] = board[1] = [0] * 6
 
         if scores[1] > scores[0]:
             return f"{players[1]} wins!"
         elif scores[0] > scores[1]:
             return f"{players[0]} wins!"
         else:
-            return f"It's a tie between {players[1]} and {players[0]}!"
+            return f"It's a tie between {players[1]} and {players[0]}!\n"
     else:
         return "Game still in progress."
