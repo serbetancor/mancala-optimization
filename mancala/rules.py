@@ -21,10 +21,13 @@ def make_move(board, player, selected_hole, scores):
         if direction == 1:
             # Change board side
             if current_hole > 5:
+                if direction == player:
+                    scores[0] += 1
+                    stones -= 1
+                if stones > 0:
+                    current_hole = 5 
                 direction =  1 - direction
-                current_hole = 5
-                scores[0] += 1
-                stones -= 1
+                
             else:
                 board[direction][current_hole] += 1
                 stones -= 1
@@ -32,10 +35,13 @@ def make_move(board, player, selected_hole, scores):
 
         else:
             if current_hole < 0:
+                if direction == player:
+                    scores[1] += 1
+                    stones -= 1
+                if stones > 0:
+                    current_hole = 0
                 direction = 1 - direction
-                current_hole = 0
-                scores[1] += 1
-                stones -= 1
+
             else:
                 board[direction][current_hole] += 1
                 stones -= 1
@@ -49,16 +55,16 @@ def make_move(board, player, selected_hole, scores):
         board[1 - direction][current_hole] = 0
 
 # Función para verificar el estado del juego
-def verificar_estado_juego(tablero):
+def verificar_estado_juego(board):
     # Si alguno de los lados está vacío, el juego ha terminado
-    if sum(tablero[0]) == 0 or sum(tablero[1]) == 0:
+    if sum(board[0]) == 0 or sum(board[1]) == 0:
         # Capturar las semillas restantes y agregarlas a los mancalas
-        tablero[0][6] += sum(tablero[0])
-        tablero[1][6] += sum(tablero[1])
+        board[0][6] += sum(board[0])
+        board[1][6] += sum(board[1])
         # Determinar al ganador
-        if tablero[0][6] > tablero[1][6]:
+        if board[0][6] > board[1][6]:
             return "¡Jugador 1 gana!"
-        elif tablero[0][6] < tablero[1][6]:
+        elif board[0][6] < board[1][6]:
             return "¡Jugador 2 gana!"
         else:
             return "¡Es un empate!"
