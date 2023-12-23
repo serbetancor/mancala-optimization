@@ -1,6 +1,6 @@
 # Optimiza este código de Python al máximo. Recuerda conservar todas las funcionalidades lógicas. Quiero que mi resultado sea exactamente igual. Respira y no cometas errores.
 
-# File: rules.py
+# File: logic.py
 
 # Making a move function
 def make_move(board, player, selected_hole, scores):
