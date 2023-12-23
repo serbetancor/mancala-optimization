@@ -1,5 +1,5 @@
 import tkinter as tk
-from mancala.rules import make_move, game_status
+from rules import make_move, game_status
 
 class MancalaUI:
     def __init__(self, root, board, scores, players):

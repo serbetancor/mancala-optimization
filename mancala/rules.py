@@ -52,7 +52,7 @@ def make_move(board, player, selected_hole, scores):
     
     current_hole = current_hole + 1 if direction == 0 else current_hole - 1
     if (6 > current_hole > -1) and board[direction][current_hole] == 1 and direction==player and board[1- direction][current_hole] != 0:
-        scores[direction] += board[direction][current_hole] + 1
+        scores[direction] += board[1 -direction][current_hole] + 1
         board[direction][current_hole] = 0
         board[1 - direction][current_hole] = 0 
 
