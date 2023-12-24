@@ -1,39 +1,28 @@
-# Archivo: main.py
-from mancala.board import print_board
-from mancala.logic import make_move, game_status
-from mancala.minimax import find_best_move
+import tkinter as tk
+
+def start_game(mode):
+    print(f"Starting the game with {mode} mode.")
+
+def choose_mode():
+    root = tk.Tk()
+    root.title("Mancala Game - Mode Selection")
+    root.geometry("650x1000")
+
+    button_frame = tk.Frame(root)
+    button_frame.pack(expand=True, fill=tk.BOTH)  # Ocupa todo el espacio
+
+    # Botón para el modo "Capture"
+    capture_button = tk.Button(button_frame, text="Capture", command=lambda: start_game("Capture"))
+    capture_button.pack(expand=True, fill=tk.BOTH, padx=25, pady=25)  # Ocupa todo el espacio dentro del Frame
+
+    # Botón para el modo "Avalanche"
+    avalanche_button = tk.Button(button_frame, text="Avalanche", command=lambda: start_game("Avalanche"))
+    avalanche_button.pack(expand=True, fill=tk.BOTH, padx=25, pady=25)  # Ocupa todo el espacio disponible
+
+    root.mainloop()
 
 def main():
-    # Initial representation
-    board = [
-        [0, 3, 2, 5, 2, 5],  # Player
-        [6, 3, 6, 3, 3, 5]  # Bot
-    ]
-
-    players = ["Pablo", "Sergio"]
-    player = 1
-    scores = [1, 0]
-
-    print_board(board, scores, players)
-
-    while True:
-        # selected_hole = find_best_move(board, player, players, scores) 
-
-        if player == 1:
-            selected_hole = find_best_move(board, player, players, scores)
-        else:
-            selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1
-            
-        result = make_move(board, player, selected_hole, scores)
-        if result != "error":
-            game_state = game_status(board, scores, players)
-            print_board(board, scores, players)
-
-            if "wins" in game_state.lower() or "tie" in game_state.lower():
-                print("\n<---------------------------------->\n\n", game_state)
-                break
-            
-            player = result  # Alternate between players
+    choose_mode()
 
 if __name__ == "__main__":
     main()
