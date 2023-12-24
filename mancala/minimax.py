@@ -1,51 +1,68 @@
 # File: minimax.py
 
-from mancala.logic import make_move
+from mancala.logic import make_move, game_status
 
-def evaluate_board(player, scores):
-    # Esta es una función de evaluación simple que resta los puntajes del oponente
-    # de los puntajes del jugador actual.
-    return scores[player] - scores[1 - player]
+def minimax(board, depth, maximizing_player, alpha, beta, player, players, scores):
+    if depth == 0 or game_status(board, scores, players) != "Game still in progress.":
+        return scores[player] - scores[1 - player]
 
-def minimax(board, depth, maximizing_player, player, scores):
-    if depth == 0 or sum(board[0]) == 0 or sum(board[1]) == 0:
-        return evaluate_board(player, scores)
-
+    legal_moves = [i for i in range(6) if board[player][i] > 0]
     if maximizing_player:
         max_eval = float('-inf')
-        for move in range(6):
-            if board[player][move] != 0:
-                new_board = [row[:] for row in board]
-                new_scores = scores[:]
-                new_player = make_move(new_board, player, move, new_scores)
-                eval = minimax(new_board, depth - 1, True, new_player, new_scores)
+        for move in legal_moves:
+            new_board = [row[:] for row in board]
+            new_scores = scores[:]
+            result = make_move(new_board, player, move, new_scores)
+            if result != "error":
+                if result != player:
+                    eval = minimax(new_board, depth - 1, False, alpha, beta, 1 - player, players, new_scores)
+                else:
+                    eval = minimax(new_board, depth - 1, True, alpha, beta, player, players, new_scores)
+
                 max_eval = max(max_eval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break
         return max_eval
     else:
         min_eval = float('inf')
-        for move in range(6):
-            if board[player][move] != 0:
-                new_board = [row[:] for row in board]
-                new_scores = scores[:]
-                new_player = make_move(new_board, player, move, new_scores)
-                eval = minimax(new_board, depth - 1, False, new_player, new_scores)
-                min_eval = min(min_eval, eval)
-        return min_eval
-
-def find_best_move(board, player, scores):
-    best_move = -1
-    best_eval = float('-inf')
-
-    for move in range(6):
-        if board[player][move] != 0:
+        for move in legal_moves:
             new_board = [row[:] for row in board]
             new_scores = scores[:]
-            new_player = make_move(new_board, player, move, new_scores)
-            eval = minimax(new_board, 5, False, new_player, new_scores)  # Puedes ajustar la profundidad
-            if eval > best_eval:
-                best_eval = eval
+            result = make_move(new_board, player, move, new_scores)
+            if result != "error":
+                if result != player:
+                    eval = minimax(new_board, depth - 1, True, alpha, beta, 1 - player, players, new_scores)
+                else:
+                    eval = minimax(new_board, depth - 1, False, alpha, beta, player, players, new_scores)
+                
+                min_eval = min(min_eval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break
+        return min_eval
+
+def find_best_move(board, player, players, scores):
+    best_score = float('-inf')
+    best_move = -1
+    alpha = float('-inf')
+    beta = float('inf')
+
+    legal_moves = [i for i in range(6) if board[player][i] > 0]
+
+    for move in legal_moves:
+        new_board = [row[:] for row in board]
+        new_scores = scores[:]
+        result = make_move(new_board, player, move, new_scores)
+        if result != "error":
+            if result != player:
+                eval = minimax(new_board, 12, False, alpha, beta, 1 - player, players, new_scores)
+            else:
+                eval = minimax(new_board, 12, True, alpha, beta, player, players, new_scores)
+
+            if eval > best_score:
+                best_score = eval
                 best_move = move
 
-    print("\nSergio should play ", best_move + 1, ".\n")
+    print(f"\n{players[player]} decides to play {best_move + 1}.\n")
     return best_move
-
