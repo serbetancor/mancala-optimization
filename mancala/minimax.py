@@ -1,85 +1,65 @@
 # File: minimax.py
 
-from board import print_board
-from rules import make_move, game_status
+from mancala.logic import make_move, game_status
 
-def evaluate_board(board, player, scores):
-    # Esta es una función de evaluación simple que resta los puntajes del oponente
-    # de los puntajes del jugador actual.
-    return scores[player] - scores[1 - player]
+def minimax(board, depth, maximizing_player, alpha, beta, player, players, scores):
+    if depth == 0 or game_status(board, scores, players) != "Game still in progress.":
+        return scores[1] - scores[0]
 
-def minimax(board, depth, maximizing_player, player, scores):
-    if depth == 0 or sum(board[0]) == 0 or sum(board[1]) == 0:
-        return evaluate_board(board, player, scores)
-
+    legal_moves = [i for i in range(6) if board[player][i] > 0]
     if maximizing_player:
         max_eval = float('-inf')
-        for move in range(6):
-            if board[player][move] != 0:
-                new_board = [row[:] for row in board]
-                new_scores = scores[:]
-                new_player = make_move(new_board, player, move, new_scores)
-                eval = minimax(new_board, depth - 1, True, new_player, new_scores)
-                max_eval = max(max_eval, eval)
+        for move in legal_moves:
+            new_board = [row[:] for row in board]
+            new_scores = scores[:]
+            result = make_move(new_board, player, move, new_scores)
+            if result != player:
+                eval = minimax(new_board, depth - 1, False, alpha, beta, 1 - player, players, new_scores)
+            else:
+                eval = minimax(new_board, depth, True, alpha, beta, player, players, new_scores)
+
+            max_eval = max(max_eval, eval)
+            alpha = max(alpha, max_eval)
+            if max_eval >= beta:
+                break
         return max_eval
     else:
         min_eval = float('inf')
-        for move in range(6):
-            if board[player][move] != 0:
-                new_board = [row[:] for row in board]
-                new_scores = scores[:]
-                new_player = make_move(new_board, player, move, new_scores)
-                eval = minimax(new_board, depth - 1, False, new_player, new_scores)
-                min_eval = min(min_eval, eval)
-        return min_eval
-
-def find_best_move(board, player, scores):
-    best_move = -1
-    best_eval = float('-inf')
-
-    for move in range(6):
-        if board[player][move] != 0:
+        for move in legal_moves:
             new_board = [row[:] for row in board]
             new_scores = scores[:]
-            new_player = make_move(new_board, player, move, new_scores)
-            eval = minimax(new_board, 5, False, new_player, new_scores)  # Puedes ajustar la profundidad
-            if eval > best_eval:
-                best_eval = eval
-                best_move = move
-
-    print("\nSergio should play ", best_move + 1, ".\n")
-    return best_move
-
-# Puedes agregar esta función en tu archivo main.py para que la IA juegue automáticamente.
-def play_with_minimax():
-    # Initial representation
-    board = [
-        [3, 5, 4, 5, 2, 3],  # Player 2
-        [3, 2, 5, 4, 5, 3],  # Player 1
-    ]
-
-    players = ["Pablo", "Sergio"]
-    player = 0
-    scores = [0, 0]
-
-    print_board(board, scores, players)
-
-    while True:
-        if player == 1:
-            selected_hole = find_best_move(board, player, scores) + 1
-        else:
-            selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): "))
+            result = make_move(new_board, player, move, new_scores)
+            if result != player:
+                eval = minimax(new_board, depth - 1, True, alpha, beta, 1 - player, players, new_scores)
+            else:
+                eval = minimax(new_board, depth, False, alpha, beta, player, players, new_scores)
             
-        result = make_move(board, player, selected_hole - 1, scores)
-        if result != "error":
-            game_state = game_status(board, scores, players)
-            print_board(board, scores, players)
-
-            if "wins" in game_state.lower() or "tie" in game_state.lower():
-                print("\n<---------------------------------->\n\n", game_state)
+            min_eval = min(min_eval, eval)
+            beta = min(beta, min_eval)
+            if min_eval <= alpha:
                 break
-            
-            player = result  # Alternate between players
+        return min_eval
 
-if __name__ == "__main__":
-    play_with_minimax()
+def find_best_move(board, player, players, scores):
+    best_score = float('-inf')
+    best_move = -1
+    alpha = float('-inf')
+    beta = float('inf')
+
+    legal_moves = [i for i in range(6) if board[player][i] > 0]
+
+    for move in legal_moves:
+        new_board = [row[:] for row in board]
+        new_scores = scores[:]
+        result = make_move(new_board, player, move, new_scores)
+        if result != player:
+            eval = minimax(new_board, 10, False, alpha, beta, 1 - player, players, new_scores)
+        else:
+            eval = minimax(new_board, 11, True, alpha, beta, player, players, new_scores)
+
+        if eval > best_score:
+            best_score = eval
+            best_move = move
+
+    print(f"\n{players[player]} decides to play {best_move + 1}.\nBest score -> {best_score}")
+    return best_move

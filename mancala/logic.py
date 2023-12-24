@@ -1,6 +1,6 @@
 # Optimiza este código de Python al máximo. Recuerda conservar todas las funcionalidades lógicas. Quiero que mi resultado sea exactamente igual. Respira y no cometas errores.
 
-# File: rules.py
+# File: logic.py
 
 # Making a move function
 def make_move(board, player, selected_hole, scores):
@@ -56,18 +56,17 @@ def make_move(board, player, selected_hole, scores):
         board[direction][current_hole] = 0
         board[1 - direction][current_hole] = 0 
 
+    if sum(board[0]) == 0 or sum(board[1]) == 0:
+        scores[0] += sum(board[0])
+        scores[1] += sum(board[1])
+        board[0] = board[1] = [0] * 6
+
     return player if (current_hole == 7 or current_hole == -2) else 1 - player
 
 # Checking game state
 def game_status(board, scores, players):
 
     if sum(board[0]) == 0 or sum(board[1]) == 0:
-
-        scores[0] += sum(board[0])
-        scores[1] += sum(board[1])
-
-        board[0] = board[1] = [0] * 6
-
         if scores[1] > scores[0]:
             return f"{players[1]} wins!"
         elif scores[0] > scores[1]:
