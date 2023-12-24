@@ -1,6 +1,7 @@
 # File: minimax.py
 
-from mancala.logic import make_move, game_status
+from capture_logic import make_move
+from common_logic import game_status
 
 def minimax(board, depth, maximizing_player, alpha, beta, player, players, scores):
     if depth == 0 or game_status(board, scores, players) != "Game still in progress.":

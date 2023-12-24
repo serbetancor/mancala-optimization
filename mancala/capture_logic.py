@@ -1,6 +1,8 @@
-# Optimiza este código de Python al máximo. Recuerda conservar todas las funcionalidades lógicas. Quiero que mi resultado sea exactamente igual. Respira y no cometas errores.
+# File: capture_logic.py
 
-# File: logic.py
+from board import print_board
+from minimax import find_best_move
+from common_logic import game_status
 
 # Making a move function
 def make_move(board, player, selected_hole, scores):
@@ -63,15 +65,24 @@ def make_move(board, player, selected_hole, scores):
 
     return player if (current_hole == 7 or current_hole == -2) else 1 - player
 
-# Checking game state
-def game_status(board, scores, players):
+def start_capture(board, players, player, scores):
+    print_board(board, scores, players)
 
-    if sum(board[0]) == 0 or sum(board[1]) == 0:
-        if scores[1] > scores[0]:
-            return f"{players[1]} wins!"
-        elif scores[0] > scores[1]:
-            return f"{players[0]} wins!"
+    while True:
+        # selected_hole = find_best_move(board, player, players, scores) 
+
+        if player == 1:
+            selected_hole = find_best_move(board, player, players, scores)
         else:
-            return f"It's a tie between {players[1]} and {players[0]}!\n"
-    else:
-        return "Game still in progress."
+            selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1
+            
+        result = make_move(board, player, selected_hole, scores)
+        if result != "error":
+            game_state = game_status(board, scores, players)
+            print_board(board, scores, players)
+
+            if "wins" in game_state.lower() or "tie" in game_state.lower():
+                print("\n<---------------------------------->\n\n", game_state)
+                break
+            
+            player = result  # Alternate between players

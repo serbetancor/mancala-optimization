@@ -1,4 +1,4 @@
-# board.py
+# file board.py
 
 # Printing current game situation
 def print_board(board, scores, players):
