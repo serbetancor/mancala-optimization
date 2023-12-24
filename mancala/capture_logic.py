@@ -1,9 +1,5 @@
 # File: capture_logic.py
 
-from board import print_board
-from minimax import find_best_move
-from common_logic import game_status
-
 # Making a move function
 def make_move(board, player, selected_hole, scores):
     # Check if it is valid
@@ -64,25 +60,3 @@ def make_move(board, player, selected_hole, scores):
         board[0] = board[1] = [0] * 6
 
     return player if (current_hole == 7 or current_hole == -2) else 1 - player
-
-def start_capture(board, players, player, scores):
-    print_board(board, scores, players)
-
-    while True:
-        # selected_hole = find_best_move(board, player, players, scores) 
-
-        if player == 1:
-            selected_hole = find_best_move(board, player, players, scores)
-        else:
-            selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1
-            
-        result = make_move(board, player, selected_hole, scores)
-        if result != "error":
-            game_state = game_status(board, scores, players)
-            print_board(board, scores, players)
-
-            if "wins" in game_state.lower() or "tie" in game_state.lower():
-                print("\n<---------------------------------->\n\n", game_state)
-                break
-            
-            player = result  # Alternate between players

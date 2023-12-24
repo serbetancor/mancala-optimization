@@ -1,6 +1,6 @@
 # Archivo: main.py
-from mancala.capture_logic import start_capture
-from mancala.avalanche_logic import start_avalanche
+from mancala.run_start import start_capture
+from mancala.run_start import start_avalanche
 
 def main():
     # Initial representation
@@ -10,10 +10,10 @@ def main():
     ]
 
     players = ["Pablo", "Sergio"]
-    player = 1
+    player = 0
     scores = [0, 0]
 
-    mode_select = int(input(f"\n<---------------------------------->What game mode do you want to play?:\n1) Capture\n2) Avalanche"))
+    mode_select = int(input(f"\nWhat game mode do you want to play?:\n1) Capture\n2) Avalanche\n\nSelect game mode -> "))
     if mode_select == 1:
         start_capture(board, players, player, scores)
     elif mode_select == 2:
