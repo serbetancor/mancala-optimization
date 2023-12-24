@@ -6,23 +6,23 @@ from mancala.minimax import find_best_move
 def main():
     # Initial representation
     board = [
-        [4, 4, 4, 4, 4, 4],  # Player
-        [4, 4, 4, 4, 4, 4]  # Bot
+        [0, 3, 2, 5, 2, 5],  # Player
+        [6, 3, 6, 3, 3, 5]  # Bot
     ]
 
     players = ["Pablo", "Sergio"]
-    player = 0
-    scores = [0, 0]
+    player = 1
+    scores = [1, 0]
 
     print_board(board, scores, players)
 
     while True:
-        selected_hole = find_best_move(board, player, players, scores) 
+        # selected_hole = find_best_move(board, player, players, scores) 
 
-        # if player == 1:
-        #     selected_hole = find_best_move(board, player, players, scores)
-        # else:
-        #     selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1
+        if player == 1:
+            selected_hole = find_best_move(board, player, players, scores)
+        else:
+            selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1
             
         result = make_move(board, player, selected_hole, scores)
         if result != "error":
