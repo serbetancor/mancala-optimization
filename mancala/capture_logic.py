@@ -1,7 +1,7 @@
 # File: capture_logic.py
 
 # Making a move function
-def make_move(board, player, selected_hole, scores):
+def move_capture(board, player, selected_hole, scores):
     # Check if it is valid
     if not (0 <= selected_hole <= 5):
         print("\nInvalid movement! Please choose between 1-6.")

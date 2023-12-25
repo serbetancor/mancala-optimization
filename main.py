@@ -1,6 +1,5 @@
 # Archivo: main.py
-from mancala.run_start import start_capture
-from mancala.run_start import start_avalanche
+from mancala.run_start import run_start
 
 def main():
     # Initial representation
@@ -13,13 +12,14 @@ def main():
     player = 0
     scores = [0, 0]
 
-    mode_select = int(input(f"\nWhat game mode do you want to play?:\n1) Capture\n2) Avalanche\n\nSelect game mode -> "))
-    if mode_select == 1:
-        start_capture(board, players, player, scores)
-    elif mode_select == 2:
-        start_avalanche(board, players, player, scores)
-    else:
-        print("Please enter a valid game mode.")
+    while True:
+        mode_select = int(input(f"\nWhat game mode do you want to play?:\n1) Capture\n2) Avalanche\n\nSelect game mode -> "))
+        if mode_select == 1:
+            run_start(board, players, player, scores, "capture")
+        elif mode_select == 2:
+            run_start(board, players, player, scores, "avalanche")
+        else:
+            print("Please enter a valid game mode.")
 
 
 if __name__ == "__main__":
