@@ -4,8 +4,8 @@ from mancala.run_start import run_start
 def main():
     # Initial representation
     board = [
-        [4, 4, 2, 4, 1, 2],  # Player
-        [2, 1, 1, 2, 4, 4]  # Bot
+        [3, 5, 1, 3, 1, 2],  # Player
+        [2, 1, 3, 1, 5, 3]  # Bot
     ]
 
     players = ["Sergio", "Nuria"]

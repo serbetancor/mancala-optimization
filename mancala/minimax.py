@@ -47,6 +47,7 @@ def find_best_move(board, player, players, scores, mode):
     best_move = -1
     alpha = float('-inf')
     beta = float('inf')
+    depth = 5 if mode == "avalanche" else 10
 
     legal_moves = [i for i in range(6) if board[player][i] > 0]
 
@@ -56,9 +57,9 @@ def find_best_move(board, player, players, scores, mode):
         result = move_capture(new_board, player, move, new_scores) if mode == "capture" else move_avalanche(new_board, player, move, new_scores)
 
         if result != player:
-            eval = minimax(new_board, 10, False, alpha, beta, 1 - player, players, new_scores, mode)
+            eval = minimax(new_board, depth, False, alpha, beta, 1 - player, players, new_scores, mode)
         else:
-            eval = minimax(new_board, 11, True, alpha, beta, player, players, new_scores, mode)
+            eval = minimax(new_board, depth + 1, True, alpha, beta, player, players, new_scores, mode)
 
         if eval > best_score:
             best_score = eval
