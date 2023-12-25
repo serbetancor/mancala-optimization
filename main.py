@@ -4,11 +4,11 @@ from mancala.run_start import run_start
 def main():
     # Initial representation
     board = [
-        [4, 4, 4, 4, 4, 4],  # Player
-        [4, 4, 4, 4, 4, 4]  # Bot
+        [4, 4, 2, 4, 1, 2],  # Player
+        [2, 1, 1, 2, 4, 4]  # Bot
     ]
 
-    players = ["Pablo", "Sergio"]
+    players = ["Sergio", "Nuria"]
     player = 0
     scores = [0, 0]
 

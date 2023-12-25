@@ -15,8 +15,6 @@ def run_start(board, players, player, scores, mode):
         # selected_hole = find_best_move(board, player, players, scores) 
 
         if player == 1:
-            time.sleep(50)
-
             selected_hole = find_best_move(board, player, players, scores, mode)
         else:
             selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1

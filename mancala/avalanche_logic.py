@@ -1,5 +1,7 @@
 # File: avalanche_logic.py
 
+import time
+
 # Making a move function
 def move_avalanche(board, player, selected_hole, scores):
     # Check if it is valid
@@ -54,16 +56,11 @@ def move_avalanche(board, player, selected_hole, scores):
                 stones = check_last_stone(board, current_hole, direction, stones)
                 current_hole -= 1
 
-
-    if sum(board[0]) == 0 or sum(board[1]) == 0:
-        scores[0] += sum(board[0])
-        scores[1] += sum(board[1])
-        board[0] = board[1] = [0] * 6
-
+    current_hole = current_hole + 1 if direction == 0 else current_hole - 1
     return player if (current_hole == 7 or current_hole == -2) else 1 - player
 
 def check_last_stone(board, current_hole, direction, stones):
-    if stones == 0 and -1 < current_hole < 6 and board[direction][current_hole] != 0:
+    if stones == 0 and -1 < current_hole < 6 and board[direction][current_hole] != 1:
         stones = board[direction][current_hole]
         board[direction][current_hole] = 0
 
