@@ -1,39 +1,26 @@
 # Archivo: main.py
-from mancala.board import print_board
-from mancala.logic import make_move, game_status
-from mancala.minimax import find_best_move
+from mancala.run_start import run_start
 
 def main():
     # Initial representation
     board = [
-        [0, 3, 2, 5, 2, 5],  # Player
-        [6, 3, 6, 3, 3, 5]  # Bot
+        [3, 5, 1, 3, 1, 2],  # Player
+        [2, 1, 3, 1, 5, 3]  # Bot
     ]
 
-    players = ["Pablo", "Sergio"]
-    player = 1
-    scores = [1, 0]
-
-    print_board(board, scores, players)
+    players = ["Sergio", "Nuria"]
+    player = 0
+    scores = [0, 0]
 
     while True:
-        # selected_hole = find_best_move(board, player, players, scores) 
-
-        if player == 1:
-            selected_hole = find_best_move(board, player, players, scores)
+        mode_select = int(input(f"\nWhat game mode do you want to play?:\n1) Capture\n2) Avalanche\n\nSelect game mode -> "))
+        if mode_select == 1:
+            run_start(board, players, player, scores, "capture")
+        elif mode_select == 2:
+            run_start(board, players, player, scores, "avalanche")
         else:
-            selected_hole = int(input(f"\n<---------------------------------->\n\n{players[player]}'s turn. Choose a position (1-6): ")) - 1
-            
-        result = make_move(board, player, selected_hole, scores)
-        if result != "error":
-            game_state = game_status(board, scores, players)
-            print_board(board, scores, players)
+            print("Please enter a valid game mode.")
 
-            if "wins" in game_state.lower() or "tie" in game_state.lower():
-                print("\n<---------------------------------->\n\n", game_state)
-                break
-            
-            player = result  # Alternate between players
 
 if __name__ == "__main__":
     main()

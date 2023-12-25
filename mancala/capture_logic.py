@@ -1,9 +1,7 @@
-# Optimiza este código de Python al máximo. Recuerda conservar todas las funcionalidades lógicas. Quiero que mi resultado sea exactamente igual. Respira y no cometas errores.
-
-# File: logic.py
+# File: capture_logic.py
 
 # Making a move function
-def make_move(board, player, selected_hole, scores):
+def move_capture(board, player, selected_hole, scores):
     # Check if it is valid
     if not (0 <= selected_hole <= 5):
         print("\nInvalid movement! Please choose between 1-6.")
@@ -62,16 +60,3 @@ def make_move(board, player, selected_hole, scores):
         board[0] = board[1] = [0] * 6
 
     return player if (current_hole == 7 or current_hole == -2) else 1 - player
-
-# Checking game state
-def game_status(board, scores, players):
-
-    if sum(board[0]) == 0 or sum(board[1]) == 0:
-        if scores[1] > scores[0]:
-            return f"{players[1]} wins!"
-        elif scores[0] > scores[1]:
-            return f"{players[0]} wins!"
-        else:
-            return f"It's a tie between {players[1]} and {players[0]}!\n"
-    else:
-        return "Game still in progress."
