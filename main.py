@@ -4,13 +4,13 @@ from mancala.run_start import run_start
 def main():
     # Initial representation
     board = [
-        [3, 5, 1, 3, 1, 2],  # Player
-        [2, 1, 3, 1, 5, 3]  # Bot
+        [4, 6, 1, 6, 4, 4],  # Player
+        [4, 0, 6, 6, 6, 0]  # Bot
     ]
 
-    players = ["Sergio", "Nuria"]
-    player = 0
-    scores = [0, 0]
+    players = ["Pablo", "Sergio"]
+    player = 1
+    scores = [1, 0]
 
     while True:
         mode_select = int(input(f"\nWhat game mode do you want to play?:\n1) Capture\n2) Avalanche\n\nSelect game mode -> "))
